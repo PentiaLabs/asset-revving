@@ -1,6 +1,7 @@
 'use strict';
 
 const Mustache = require('mustache');
+const crypto = require('crypto');
 
 class AssetRevving {
 	constructor( opts ) {
@@ -32,19 +33,19 @@ class AssetRevving {
 		return template;
 	}
 
-	renaming( filename ) {
+	renaming( filename, contents ) {
 		let renamed = filename;
 
 		if ( this.env === 'production' ) {
-            // TODO: do revving...
+			renamed = crypto.createHash('md5').update( contents.toString() ).digest('hex');
 		}
 
 		return renamed;
 	}
 
-	revving( file ) {
+	revving( file, contents ) {
 		let template = this.templating();
-		let rev = { file : this.renaming( file ) };
+		let rev = { file : this.renaming( file, contents ) };
 
 		return Mustache.render(template, rev);
 	}

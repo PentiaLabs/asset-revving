@@ -9,6 +9,7 @@
   "author": "Brian Frisch (brf@pentia.dk)",
   "license": "ISC",
   "dependencies": {
+    "crypto": "0.0.3",
     "mustache": "^2.3.0"
   }
 }
