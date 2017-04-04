@@ -1,6 +1,6 @@
 {
   "name": "@pentia/asset-revving",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create environment specific references for frontend assets.",
   "main": "index.js",
   "scripts": {
