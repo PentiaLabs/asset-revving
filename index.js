@@ -2,6 +2,7 @@
 
 const Mustache = require('mustache');
 const crypto = require('crypto');
+const path = require('path');
 
 class AssetRevving {
 	constructor( opts ) {
@@ -33,21 +34,28 @@ class AssetRevving {
 		return template;
 	}
 
-	renaming( filename, contents ) {
-		let renamed = filename;
+	renaming( filename, contents, cacheHandlerPrefix ) {
+		let renamed = path.basename(filename);
 
 		if ( this.env === 'production' ) {
-			renamed = crypto.createHash('md5').update( contents.toString() ).digest('hex');
+			let ext = path.extname(filename);
+			let base = path.basename(filename, ext);
+
+			let hash = crypto.createHash('md5').update( contents.toString() ).digest('hex');
+
+			renamed = '' + base + cacheHandlerPrefix + hash + ext;
 		}
 
 		return renamed;
 	}
 
-	revving( file, contents ) {
+	revving( file, contents, cacheHandlerPrefix ) {
 		let template = this.templating();
-		let rev = { file : this.renaming( file, contents ) };
+		let rev = { file : this.renaming( file, contents, cacheHandlerPrefix ) };
 
-		return Mustache.render(template, rev);
+		return {
+			contents : Mustache.render(template, rev)
+		}
 	}
 }
 
