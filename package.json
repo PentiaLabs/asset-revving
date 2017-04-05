@@ -1,12 +1,12 @@
 {
   "name": "@pentia/asset-revving",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Create environment specific references for frontend assets.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Brian Frisch (brf@pentia.dk)",
+  "author": "Brian Frisch (brian.frisch@gmail.com)",
   "license": "ISC",
   "dependencies": {
     "crypto": "0.0.3",

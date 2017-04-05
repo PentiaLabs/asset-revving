@@ -51,10 +51,14 @@ class AssetRevving {
 
 	revving( file, contents, cacheHandlerPrefix ) {
 		let template = this.templating();
-		let rev = { file : this.renaming( file, contents, cacheHandlerPrefix ) };
+		let templateData = { file : this.renaming( file, contents, cacheHandlerPrefix ) };
+
+		if (this.main) {
+			templateData.main = this.main;
+		}
 
 		return {
-			contents : Mustache.render(template, rev)
+			contents : Mustache.render(template, templateData)
 		}
 	}
 }
