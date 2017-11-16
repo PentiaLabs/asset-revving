@@ -15,16 +15,16 @@ class AssetRevving {
 		let template = '';
 
 		switch ( this.mode ) {
-		case 'css': 
-			template = '<link rel="stylesheet" type="text/css" href="{{file}}" />';
+		case 'css':
+			template = '@inherits System.Web.Mvc.WebViewPage' + '\n' + '<link rel="stylesheet" type="text/css" href="{{{file}}}" />';
 			break;
 
 		case 'requirejs-dev':
-			template = '<script data-main="{{main}}" src="{{file}}"></script>';
+			template = '@inherits System.Web.Mvc.WebViewPage' + '\n' + '<script data-main="{{{main}}}" src="{{{file}}}"></script>';
 			break;
 
 		case 'requirejs-production':
-			template = '<script src="{{file}}"></script>';
+			template = '@inherits System.Web.Mvc.WebViewPage' + '\n' + '<script src="{{{file}}}"></script>';
 			break;
 
 		default:
@@ -43,18 +43,29 @@ class AssetRevving {
 
 			let hash = crypto.createHash('md5').update( contents.toString() ).digest('hex');
 
-			renamed = '' + base + cacheHandlerPrefix + hash + ext;
+			renamed = '' + base + ext + '?v=' + hash;
 		}
 
 		return renamed;
 	}
 
 	revving( file, contents, cacheHandlerPrefix ) {
+		let assetPath = '';
+		let renamed = this.renaming( file, contents, cacheHandlerPrefix );
+
+		if ( this.env === 'production' ) {
+			assetPath = '/dist/production/'
+		}
+
+		if ( this.env === 'development' ) {
+			assetPath = '/dist/dev/'
+		}
+
 		let template = this.templating();
-		let templateData = { file : this.renaming( file, contents, cacheHandlerPrefix ) };
+		let templateData = { file : '~' + assetPath + renamed };
 
 		if (this.main) {
-			templateData.main = this.main;
+			templateData.main = assetPath + this.main;
 		}
 
 		return {
