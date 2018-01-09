@@ -57,7 +57,7 @@ class AssetRevving {
 			assetPath = '/dist/production/'
 		}
 
-		if ( this.env === 'development' ) {
+		if ( this.env === 'dev' ) {
 			assetPath = '/dist/dev/'
 		}
 
